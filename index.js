@@ -116,7 +116,7 @@ app.get('/getPersonaInformacion', function (req, res, next) {
     var result = [];
     var post = req.query;
     initBdd();
-    res.json({success: true, data: post, update: true});
+    res.json({success: true, data: post, update: true,init_bdd:init_bdd});
     
 });
 io.on('connection', function (socket) {
