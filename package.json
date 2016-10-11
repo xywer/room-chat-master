@@ -2,7 +2,7 @@
     "name": "room-chat-master",
     "version": "1.0.0",
     "description": "testing chat",
-    "main": "chat.js",
+    "main": "index.js",
     "dependencies": {
         "express": "*",
         "socket.io": "*",
@@ -11,7 +11,7 @@
     },
     "devDependencies": {},
     "scripts": {
-        "start": "node chat.js"
+        "start": "node index.js"
     },
     "engines": {
         "node": "0.10.31"
