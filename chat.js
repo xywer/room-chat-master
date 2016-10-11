@@ -115,9 +115,21 @@ app.get('/getPersonaInformacion', function (req, res, next) {
     var init_bdd = initBdd();
     var result = [];
     var post = req.query;
-    initBdd();
-    res.json({success: true, data: post, update: true,init_bdd:init_bdd});
-    
+//    initBdd();
+    connection = mysql.createConnection(params_bdd);
+    connection.connect(function (err) {
+        if (err) {
+            console.log('Error connecting to Db:');
+            console.log(err);
+            init_bdd = false;
+        } else {
+            init_bdd = true;
+            console.log('Connection established');
+        }
+
+    });
+    res.json({success: true, data: post, update: true, init_bdd: init_bdd});
+
 });
 io.on('connection', function (socket) {
 //-----------chat---
@@ -178,7 +190,6 @@ function initBdd() {
                 init_bdd = false;
             } else {
                 init_bdd = true;
-
                 console.log('Connection established');
             }
 
