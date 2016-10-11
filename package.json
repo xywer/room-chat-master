@@ -1,0 +1,21 @@
+{
+    "name": "room-chat-master",
+    "version": "1.0.0",
+    "description": "testing chat",
+    "main": "chat.js",
+    "dependencies": {
+        "express": "*",
+        "socket.io": "*",
+        "mysql": "*",
+        "cors": "*"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "start": "node chat.js"
+    },
+    "engines": {
+        "node": "0.10.31"
+    },
+    "author": "Migu3ln Alba",
+    "license": "ISC"
+}
