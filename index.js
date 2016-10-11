@@ -1,10 +1,29 @@
+//INICIALIZACION D VARIABLES GLOBALES
+//PUERTO DONDE VA A CORRER EL SERVIDOR 
+//****************CORS **************
+//https://github.com/expressjs/cors
+// ES UN MODULO PARA PODER DAR PERMISOS
+//DE ACCESO AL SERVIDOR
+//Y PODER 
+//***********************EXPRESS*****************
+//En esta introducci�n a la programaci�n as�ncrona con Node.js 
+//vamos a introducirnos en el desarrollo web con express.js. 
+//  Express est� construido sobre Connect un framework extensible de 
+//  manejo de servidores HTTP que provee de
+//plugins de alto rendimiento conocidos como middleware.
+//---------VARIABLES GLOBALES----------
+//----------ASIGNAR LA CONFIGURACION DE LA BDD(NOMBRE Y PUERTO Y PASS)---------
+var port_listen = 6969;
+var port_mysql = 3306;
+var puerto_io = 3000;
+var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
+//*********************MYSQL*****************
 //-*----INICIALIZACION D MODULOS---
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || port_listen;
 var mysql = require('mysql');//para la comunicacion con la bdd 
-//https://github.com/expressjs/cors
 var cors = require('cors');//EL NOS FACILITA LA COMUNICACION A ESAS URLS  ACCESO A ESA URL
 app.use(cors());
 app.get('/', function (req, res) {
@@ -33,7 +52,73 @@ app.get('/user/:id', function (req, res) {
     res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
 
 });
+//---GESTION D INFORMACION--
+app.get('/createPersonaInformacion', function (req, res, next) {
+    connection = mysql.createConnection(params_bdd);
+    connection.connect(function (err) {
+        if (err) {
+            console.log('Error connecting to Db:');
+            console.log(err);
+            return;
+        } else {
 
+            console.log('Connection established');
+        }
+
+    });
+    var result = [];
+    var post = req.query;
+
+    if (!post.id) {//crear nuevo
+        var phone_number = post.phone_number;
+        var query_string = "SELECT * FROM  " + cuenta_persona + " t  where  t.phone_number='" + phone_number + "'";
+        var objec_conection_bdd = connection;
+        var params_data = {query_string: query_string, objec_conection_bdd: objec_conection_bdd};
+        getDataModel(params_data, function (data) {
+            if (data.length == 0) {//validacion d informacion si no existe datos se puede registrar al sistema de qullqi cash
+                var data_save = {nombres: post.nombres, apellidos: post.apellidos, persona_genero_id: post.persona_genero_id};
+                var query = connection.query('INSERT INTO ' + persona + ' SET ?', data_save, function (err, result) {
+                    var persona_id = result.insertId;
+                    var data_save = {phone_number: post.phone_number, documento: post.documento, entidad_data_id: entidad_data_id, persona_id: persona_id, pass_user: post.pass_user};
+                    var query2 = connection.query('INSERT INTO ' + cuenta_persona + ' SET ?', data_save, function (err, result2) {
+                        var children_id = result2.insertId;
+                        var data_result = {id: children_id};
+                        res.json({success: true, data: data_result, msj: 'Se registro correctamente!!'});
+                    });
+                });
+
+            } else {
+                result = {
+                    success: false,
+                    msj: "El # Tlfn ya fue tomado" + phone_number
+                };
+                res.json(result);
+
+            }
+
+        });
+
+    } else {
+        var queryString = 'UPDATE  persona_informacion SET nombres="' + post.nombres + '",' + 'apellidos="' + post.apellidos + '",' + 'documento="' + post.documento + '" WHERE persona_informacion.id=' + post.id;
+
+        connection.query(queryString, function (err, result) {
+
+            var data = {id: post.id, nombres: post.nombres, apellidos: post.apellidos, documento: post.documento}
+            res.json({success: true, data: data, update: true});
+        });
+    }
+
+
+});
+
+app.get('/getPersonaInformacion', function (req, res, next) {
+    var init_bdd = initBdd();
+    var result = [];
+    var post = req.query;
+    initBdd();
+    res.json({success: true, data: post, update: true});
+    
+});
 io.on('connection', function (socket) {
 //-----------chat---
     console.log("usuario id : %s", socket.id);
@@ -82,17 +167,27 @@ function getDataModel($params, callback) {
 }
 function initBdd() {
 
-//--------CONECCCION DE LA BDD--------
-    var connection = mysql.createConnection(params_bdd);
-    connection.connect(function (err) {
-        if (err) {
-            console.log('Error connecting to Db:');
-            console.log(err);
-            return;
-        } else {
+    var init_bdd = false;
+    try {
+        //--------CONECCCION DE LA BDD--------
+        connection = mysql.createConnection(params_bdd);
+        connection.connect(function (err) {
+            if (err) {
+                console.log('Error connecting to Db:');
+                console.log(err);
+                init_bdd = false;
+            } else {
+                init_bdd = true;
 
-            console.log('Connection established');
-        }
+                console.log('Connection established');
+            }
 
-    });
+        });
+
+    } catch (err) {
+        // Handle the error here.
+        return init_bdd;
+    }
+    return init_bdd;
+
 }
