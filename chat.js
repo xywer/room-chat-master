@@ -16,8 +16,8 @@
 var port_listen = 6969;
 var port_mysql = 3306;
 var puerto_io = 3000;
-var params_bdd = {user: "root", password: "", host: "186.101.18.195", port: port_mysql, database: "xywer"};
-//var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
+//var params_bdd = {user: "root", password: "", host: "186.101.18.195", port: port_mysql, database: "xywer"};
+var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
 //*********************MYSQL*****************
 //-*----INICIALIZACION D MODULOS---
 var app = require('express')();
@@ -32,6 +32,7 @@ app.get('/', function (req, res) {
     //response : son todo lo que enviamos desde el servidor.
     res.sendFile(__dirname + '/index.html');
 });
+
 //----WEB SERVICES--
 //---CONFIGURACIUON DE ACCESO--
 var whitelist = ['http://example1.com', 'http://example2.com', "http://192.168.0.69"];
