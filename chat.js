@@ -118,27 +118,28 @@ app.get('/getPersonaInformacion', function (req, res, next) {
     var msj = "";
     var init_bdd;
     connection = mysql.createConnection(params_bdd);
-    console.log("--------------------1---------------------");
     connection.connect(function (err) {
-        console.log("--------------------2---------------------");
-
         if (err) {
             errors = err;
-            msj = "Error Coneccion";
             init_bdd = false;
+            console.log("--------------------erro---------------------");
+            res.json({success: true, data: post, init_bdd: init_bdd, "msj": errors});
 
         } else {
-            msj = " Coneccion Exitosa";
+            msj = "Coneccion Exitosa";
             init_bdd = true;
             errors = [];
+            console.log("--------------------listo---------------------");
+            res.json({success: true, data: post, init_bdd: init_bdd, "msj": errors});
+
 
         }
 
     });
-    console.log("--------------------3---------------------");
 
 
-    res.json({success: true, data: post, update: true, init_bdd: init_bdd, "msj": errors});
+
+
 
 });
 io.on('connection', function (socket) {
