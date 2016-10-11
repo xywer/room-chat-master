@@ -135,15 +135,16 @@ app.get('/getPersonaInformacion', function (req, res, next) {
             res.json({success: false, data: post, init_bdd: init_bdd, "msj-error-bdd": errors});
 
         } else {
-            var query_string = "SELECT t.id key_id,t.persona_id, pg.valor genero,p.nombres,p.apellidos ,t.compania_taxis,t.ciudad FROM persona_informacion  t ";
-            query_string += "inner join persona p on t.persona_id=p.id ";
-            query_string += "inner join persona_genero pg on p.persona_genero_id=pg.id  ";
-            var objec_conection_bdd = connection;
-            var params_data = {query_string: query_string, objec_conection_bdd: objec_conection_bdd};
-            getDataModel(params_data, function (data) {
-                res.json(data);
-
-            });
+//            var query_string = "SELECT t.id key_id,t.persona_id, pg.valor genero,p.nombres,p.apellidos ,t.compania_taxis,t.ciudad FROM persona_informacion  t ";
+//            query_string += "inner join persona p on t.persona_id=p.id ";
+//            query_string += "inner join persona_genero pg on p.persona_genero_id=pg.id  ";
+//            var objec_conection_bdd = connection;
+//            var params_data = {query_string: query_string, objec_conection_bdd: objec_conection_bdd};
+//            getDataModel(params_data, function (data) {
+//                res.json(data);
+//
+//            });
+            res.json({success: false,"listo":"ñladekmadmadm"});
 
         }
 
