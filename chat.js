@@ -20,7 +20,7 @@ var puerto_io = 3000;
 //LOCALMENTE
 //var params_bdd = {user: "root", password: "", host: "localhost", port: port_mysql, database: "xywer"};
 //LOCALMENTE-PUBLICA
-var params_bdd = {user: "meetxywer2", password: "meetxywer2123456", host: "186.101.18.195", port: port_mysql, database: "xywer"};
+var params_bdd = {user: "root", password: "", host: "186.101.18.195", port: port_mysql, database: "xywer"};
 //BDD CREATIVEWEB
 //var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
 //*********************MYSQL*****************
