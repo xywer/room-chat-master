@@ -118,9 +118,10 @@ app.get('/getPersonaInformacion', function (req, res, next) {
     var msj = "";
     var init_bdd;
     connection = mysql.createConnection(params_bdd);
-    console.log("1");
+    console.log("--------------------1---------------------");
     connection.connect(function (err) {
-        console.log("2");
+        console.log("--------------------2---------------------");
+
         if (err) {
             errors = err;
             msj = "Error Coneccion";
@@ -134,7 +135,8 @@ app.get('/getPersonaInformacion', function (req, res, next) {
         }
 
     });
-    console.log("3");
+    console.log("--------------------3---------------------");
+
 
     res.json({success: true, data: post, update: true, init_bdd: init_bdd, "msj": errors});
 
