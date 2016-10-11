@@ -112,23 +112,30 @@ app.get('/createPersonaInformacion', function (req, res, next) {
 });
 
 app.get('/getPersonaInformacion', function (req, res, next) {
-    var init_bdd = initBdd();
     var result = [];
     var post = req.query;
-//    initBdd();
+    var errors = [];
+    var msj = "";
     connection = mysql.createConnection(params_bdd);
+    console.log("1");
     connection.connect(function (err) {
+        console.log("2");
         if (err) {
-            console.log('Error connecting to Db:');
-            console.log(err);
+            errors = err;
+            msj = "Error Coneccion";
             init_bdd = false;
+
         } else {
+            msj = " Coneccion Exitosa";
             init_bdd = true;
-            console.log('Connection established');
+            errors = [];
+
         }
 
     });
-    res.json({success: true, data: post, update: true, init_bdd: init_bdd});
+    console.log("3");
+
+    res.json({success: true, data: post, update: true, init_bdd: init_bdd, "msj": errors});
 
 });
 io.on('connection', function (socket) {
