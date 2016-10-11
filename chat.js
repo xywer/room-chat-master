@@ -116,6 +116,7 @@ app.get('/getPersonaInformacion', function (req, res, next) {
     var post = req.query;
     var errors = [];
     var msj = "";
+    var init_bdd;
     connection = mysql.createConnection(params_bdd);
     console.log("1");
     connection.connect(function (err) {
