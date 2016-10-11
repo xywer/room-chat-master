@@ -125,14 +125,14 @@ app.get('/getPersonaInformacion', function (req, res, next) {
             errors = err;
             init_bdd = false;
             console.log("--------------------erro---------------------");
-            res.json({success: true, data: post, init_bdd: init_bdd, "msj": errors});
+            res.json({success: false, data: post, init_bdd: init_bdd, "msj-error-bdd": errors});
 
         } else {
             msj = "Coneccion Exitosa";
             init_bdd = true;
             errors = [];
             console.log("--------------------listo---------------------");
-            res.json({success: true, data: post, init_bdd: init_bdd, "msj": errors});
+            res.json({success: true, data: post, init_bdd: init_bdd,  "msj-error-bdd": errors});
 
 
         }
