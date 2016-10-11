@@ -16,8 +16,13 @@
 var port_listen = 6969;
 var port_mysql = 3306;
 var puerto_io = 3000;
-//var params_bdd = {user: "root", password: "", host: "186.101.18.195", port: port_mysql, database: "xywer"};
-var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
+//---BDD SERVER---
+//LOCALMENTE
+//var params_bdd = {user: "root", password: "", host: "localhost", port: port_mysql, database: "xywer"};
+//LOCALMENTE-PUBLICA
+var params_bdd = {user: "root", password: "", host: "186.101.18.195", port: port_mysql, database: "xywer"};
+//BDD CREATIVEWEB
+//var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
 //*********************MYSQL*****************
 //-*----INICIALIZACION D MODULOS---
 var app = require('express')();
@@ -32,7 +37,8 @@ app.get('/', function (req, res) {
     //response : son todo lo que enviamos desde el servidor.
     res.sendFile(__dirname + '/index.html');
 });
-
+var result = initBdd();
+console.log(result);
 //----WEB SERVICES--
 //---CONFIGURACIUON DE ACCESO--
 var whitelist = ['http://example1.com', 'http://example2.com', "http://192.168.0.69"];
@@ -55,7 +61,7 @@ app.get('/user/:id', function (req, res) {
 
 });
 //---GESTION D INFORMACION--
-app.get('/createPersonaInformacion', function (req, res, next) {
+app.get('/registrePersonaInformacion', function (req, res, next) {
     connection = mysql.createConnection(params_bdd);
     connection.connect(function (err) {
         if (err) {
@@ -125,15 +131,19 @@ app.get('/getPersonaInformacion', function (req, res, next) {
             errors = err;
             init_bdd = false;
             console.log("--------------------erro---------------------");
+
             res.json({success: false, data: post, init_bdd: init_bdd, "msj-error-bdd": errors});
 
         } else {
-            msj = "Coneccion Exitosa";
-            init_bdd = true;
-            errors = [];
-            console.log("--------------------listo---------------------");
-            res.json({success: true, data: post, init_bdd: init_bdd,  "msj-error-bdd": errors});
+            var query_string = "SELECT t.id key_id,t.persona_id, pg.valor genero,p.nombres,p.apellidos ,t.compania_taxis,t.ciudad FROM persona_informacion  t ";
+            query_string += "inner join persona p on t.persona_id=p.id ";
+            query_string += "inner join persona_genero pg on p.persona_genero_id=pg.id  ";
+            var objec_conection_bdd = connection;
+            var params_data = {query_string: query_string, objec_conection_bdd: objec_conection_bdd};
+            getDataModel(params_data, function (data) {
+                res.json(data);
 
+            });
 
         }
 
@@ -193,25 +203,27 @@ function getDataModel($params, callback) {
 function initBdd() {
 
     var init_bdd = false;
+    var result = [];
     try {
         //--------CONECCCION DE LA BDD--------
         connection = mysql.createConnection(params_bdd);
         connection.connect(function (err) {
             if (err) {
                 console.log('Error connecting to Db:');
-                console.log(err);
-                init_bdd = false;
+                result.push({"success": false, errors: err});
             } else {
                 init_bdd = true;
-                console.log('Connection established');
+                result.push({"success": true, errors: []});
             }
+            return result;
 
         });
 
     } catch (err) {
         // Handle the error here.
-        return init_bdd;
+        result.push({"success": true, errors: err});
+
+        return result;
     }
-    return init_bdd;
 
 }
