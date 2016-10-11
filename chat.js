@@ -210,7 +210,7 @@ function initBdd() {
         connection = mysql.createConnection(params_bdd);
         connection.connect(function (err) {
             if (err) {
-                console.log('Error connecting to Db:');
+                console.log('Error connecting to Db:',err);
                 result.push({"success": false, errors: err});
             } else {
                 init_bdd = true;
