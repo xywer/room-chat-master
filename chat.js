@@ -16,7 +16,7 @@
 var port_listen = 6969;
 var port_mysql = 3306;
 var puerto_io = 3000;
-var params_bdd = {user: "meetxywer", password: "meetxywer123456", host: "http://186.101.18.195:80", port: port_mysql, database: "xywer"};
+var params_bdd = {user: "meetxywer", password: "meetxywer123456", host: "http://186.101.18.195", port: port_mysql, database: "xywer"};
 //var params_bdd = {user: "pekesc5_meetclic", password: "meetclic@", host: "creativeweb.com.ec", port: port_mysql, database: "pekesc5_xywer"};
 //*********************MYSQL*****************
 //-*----INICIALIZACION D MODULOS---
